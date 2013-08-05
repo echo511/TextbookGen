@@ -1,0 +1,20 @@
+{
+	"name": "echo511/textbook-gen",
+	"description": "Textbook generator tool.",
+	"require": {
+		"nette/nette": "@dev",
+		"kdyby/console": "@dev"
+	},
+	"require-dev": {
+		"nette/tester": "@dev",
+		"janmarek/mockista": "@dev"
+	},
+	"license": "MIT License",
+	"authors": [
+		{
+			"name": "Nikolas Tsiongas",
+			"email": "ntsiongas@gmail.com"
+		}
+	],
+	"minimum-stability": "dev"
+}
