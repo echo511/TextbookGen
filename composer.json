@@ -3,7 +3,8 @@
 	"description": "Textbook generator tool.",
 	"require": {
 		"nette/nette": "@dev",
-		"kdyby/console": "@dev"
+		"kdyby/console": "@dev",
+		"kdyby/events": "@dev"
 	},
 	"require-dev": {
 		"nette/tester": "@dev",
