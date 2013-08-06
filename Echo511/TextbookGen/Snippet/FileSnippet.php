@@ -11,6 +11,8 @@
 
 namespace Echo511\TextbookGen\Snippet;
 
+use Echo511\TextbookGen\ITitledSnippet;
+
 
 /**
  * Interface for factory of FileSnippet.
@@ -27,7 +29,7 @@ interface IFileSnippetFactory
 /**
  * Snippet saved in file.
  */
-final class FileSnippet extends Snippet
+final class FileSnippet extends Snippet implements ITitledSnippet
 {
 
 	/** @var string */
@@ -46,6 +48,15 @@ final class FileSnippet extends Snippet
 			$this->filenameHash($filename);
 			$this->addTag('filenameHash', self::filenameHash($this));
 		}
+	}
+
+
+
+	/* ---------- ITitledSnippet ---------- */
+
+	public function getTitle()
+	{
+		return basename($this->getFilename());
 	}
 
 
