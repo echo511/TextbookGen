@@ -29,6 +29,12 @@ class Generator extends Object implements IGenerator
 	public $onStartup;
 
 	/** @var callable */
+	public $onBeforeSnippetGenerate;
+
+	/** @var callable */
+	public $onAfterSnippetGenerate;
+
+	/** @var callable */
 	public $onShutdown;
 
 	/** @var IIndex */
@@ -74,7 +80,7 @@ class Generator extends Object implements IGenerator
 	 */
 	protected function startup()
 	{
-		$this->onStartup($this->index);
+		$this->onStartup();
 	}
 
 
@@ -85,8 +91,10 @@ class Generator extends Object implements IGenerator
 	protected function generate()
 	{
 		foreach ($this->index->getAll() as $snippet) {
+			$this->onBeforeSnippetGenerate($snippet);
 			$output = $this->outputGeneratorFactory->create($snippet)->generate();
 			$this->outputStorage->store($output, $snippet);
+			$this->onAfterSnippetGenerate($snippet);
 		}
 	}
 
@@ -97,7 +105,7 @@ class Generator extends Object implements IGenerator
 	 */
 	protected function shutdown()
 	{
-		$this->onShutdown($this->index);
+		$this->onShutdown();
 	}
 
 
