@@ -106,6 +106,7 @@ class IncludedSnippetsTracker extends Object
 	{
 		$this->first = null;
 		$this->alreadyIncluded = array();
+		$this->depths = array();
 	}
 
 
