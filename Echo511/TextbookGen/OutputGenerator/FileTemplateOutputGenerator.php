@@ -49,6 +49,8 @@ class FileTemplateOutputGeneratorFactory extends Object implements IOutputGenera
 
 
 
+	/* ---------- IOutputGeneratorFactory ---------- */
+
 	/**
 	 * Create generator instance.
 	 * @param ISnippet $snippet
