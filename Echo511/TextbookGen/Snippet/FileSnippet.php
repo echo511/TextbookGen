@@ -45,7 +45,7 @@ final class FileSnippet extends Snippet implements ITitledSnippet
 			$this->errors[] = "File $filename does not exist.";
 		} else {
 			parent::__construct(file_get_contents($filename));
-			$this->filenameHash($filename);
+			$this->filename = $filename;
 			$this->addTag('filenameHash', self::filenameHash($this));
 		}
 	}
