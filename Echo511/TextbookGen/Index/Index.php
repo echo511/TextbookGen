@@ -11,14 +11,18 @@
 
 namespace Echo511\TextbookGen\Index;
 
+use Echo511\TextbookGen\IIndex;
+use Echo511\TextbookGen\ISnippet;
+use Nette\Object;
+
 
 /**
  * Basic implementation of IIndex.
  */
-class Index extends \Nette\Object implements IIndex
+class Index extends Object implements IIndex
 {
 
-	/** @var ISnippets[] */
+	/** @var ISnippet[] */
 	private $snippets = array();
 
 	/** @var array */
