@@ -35,7 +35,7 @@ class IncludedSnippetsTracker extends Object
 	public function markAsFirst(ISnippet $snippet)
 	{
 		$this->first = $snippet;
-		$this->markDepth($snippet, 0);
+		$this->markDepth($snippet, 1);
 	}
 
 
@@ -58,7 +58,9 @@ class IncludedSnippetsTracker extends Object
 	 */
 	public function markDepth(ISnippet $snippet, $depth)
 	{
-		$this->depths[$snippet->hash] = $depth;
+		if (!isset($this->depths[$snippet->hash])) {
+			$this->depths[$snippet->hash] = $depth;
+		}
 	}
 
 
