@@ -46,7 +46,7 @@ class Registrator
 				$outputGenerator->onCreateTemplate[] = function (Template $template) use ($includer, $includedSnippetsTracker, $relationMap) {
 						$template->includer = $includer;
 						$template->includedSnippetsTracker = $includedSnippetsTracker;
-						$template->includerRelationMap = $relationMap;
+						$template->relationMap = $relationMap;
 					};
 			};
 	}
