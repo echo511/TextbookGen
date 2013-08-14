@@ -25,16 +25,16 @@ class RelationMap extends Object
 {
 
 	/** @var array Includer's human readable designation => Snippet's hash */
-	private $refToHash = array();
+	private $nameToHash = array();
 
 	/** @var array */
-	private $hashToRef = array();
+	private $hashToName = array();
 
 	/** @var array */
-	private $referencing;
+	private $nameerencing;
 
 	/** @var array */
-	private $referenced;
+	private $nameerenced;
 
 	/** @var Analyzator */
 	private $analyzator;
@@ -56,14 +56,14 @@ class RelationMap extends Object
 
 
 	/**
-	 * Return snippets this on is referenced by.
-	 * @param ISnippet $referenced
+	 * Return snippets this on is nameerenced by.
+	 * @param ISnippet $nameerenced
 	 * @return ISnippet[]
 	 */
-	public function getReferencing(ISnippet $referenced)
+	public function getReferencing(ISnippet $nameerenced)
 	{
-		if (isset($this->referencing[$referenced->getHash()])) {
-			return $this->referencing[$referenced->getHash()];
+		if (isset($this->nameerencing[$nameerenced->getHash()])) {
+			return $this->nameerencing[$nameerenced->getHash()];
 		}
 		return array();
 	}
@@ -71,14 +71,14 @@ class RelationMap extends Object
 
 
 	/**
-	 * Return snippets this on is referencing to.
-	 * @param ISnippet $referencing
+	 * Return snippets this on is nameerencing to.
+	 * @param ISnippet $nameerencing
 	 * @return ISnippet[]
 	 */
-	public function getReferenced(ISnippet $referencing)
+	public function getReferenced(ISnippet $nameerencing)
 	{
-		if (isset($this->referenced[$referencing->getHash()])) {
-			return $this->referenced[$referencing->getHash()];
+		if (isset($this->nameerenced[$nameerencing->getHash()])) {
+			return $this->nameerenced[$nameerencing->getHash()];
 		}
 		return array();
 	}
@@ -86,14 +86,14 @@ class RelationMap extends Object
 
 
 	/**
-	 * Translate snippet to reference variable.
+	 * Translate snippet to nameerence variable.
 	 * @param ISnippet $snippet
 	 * @return string|boolean
 	 */
-	public function getRefBySnippet(ISnippet $snippet)
+	public function getNameOfSnippet(ISnippet $snippet)
 	{
-		if (isset($this->hashToRef[$snippet->hash])) {
-			return $this->hashToRef[$snippet->hash];
+		if (isset($this->hashToName[$snippet->hash])) {
+			return $this->hashToName[$snippet->hash];
 		}
 		return false;
 	}
@@ -101,14 +101,14 @@ class RelationMap extends Object
 
 
 	/**
-	 * Translate reference variable to snippet.
-	 * @param string $ref
+	 * Translate nameerence variable to snippet.
+	 * @param string $name
 	 * @return ISnippet|boolean
 	 */
-	public function getSnippetByRef($ref)
+	public function getSnippetByName($name)
 	{
-		if (isset($this->refToHash[$ref])) {
-			$hash = $this->refToHash[$ref];
+		if (isset($this->nameToHash[$name])) {
+			$hash = $this->nameToHash[$name];
 			return $this->index->get($hash);
 		}
 		return false;
@@ -122,32 +122,32 @@ class RelationMap extends Object
 	 */
 	public function createRelationMap()
 	{
-		// Translate ref to hash
+		// Translate name to hash
 		foreach ($this->index->getAll() as $snippet) {
-			$ref = $this->analyzator->getAttribute('name', $snippet);
+			$name = $this->analyzator->getAttribute('name', $snippet);
 
-			if ($ref) { // reference specified in content
-				if (isset($this->refToHash[$ref])) {
-					throw new Exception("Includer's ref already exists.");
+			if ($name) { // nameerence specified in content
+				if (isset($this->nameToHash[$name])) {
+					throw new Exception("Includer's name already exists.");
 				} else {
-					$this->refToHash[$ref] = $snippet->getHash();
-					$this->hashToRef[$snippet->getHash()] = $ref;
+					$this->nameToHash[$name] = $snippet->getHash();
+					$this->hashToName[$snippet->getHash()] = $name;
 				}
 			}
 		}
 
 		// Create relation map
 		foreach ($this->index->getAll() as $snippet) {
-			$referenced = $this->analyzator->getAttributes('include', $snippet);
+			$nameerenced = $this->analyzator->getAttributes('include', $snippet);
 
-			foreach ($referenced as $ref) {
-				if (!isset($this->refToHash[$ref])) {
-					throw new Exception("Invalid includer reference $ref.");
+			foreach ($nameerenced as $name) {
+				if (!isset($this->nameToHash[$name])) {
+					throw new Exception("Invalid includer nameerence $name.");
 				}
-				$referencing = $snippet;
-				$referenced = $this->index->get($this->refToHash[$ref]);
+				$nameerencing = $snippet;
+				$nameerenced = $this->index->get($this->nameToHash[$name]);
 
-				$this->addRelationship($referencing, $referenced);
+				$this->addRelationship($nameerencing, $nameerenced);
 			}
 		}
 	}
@@ -156,13 +156,13 @@ class RelationMap extends Object
 
 	/**
 	 * Add relationship between two snippets.
-	 * @param ISnippet $referencing
-	 * @param ISnippet $referenced
+	 * @param ISnippet $nameerencing
+	 * @param ISnippet $nameerenced
 	 */
-	protected function addRelationship(ISnippet $referencing, ISnippet $referenced)
+	protected function addRelationship(ISnippet $nameerencing, ISnippet $nameerenced)
 	{
-		$this->referencing[$referenced->getHash()][$referencing->getHash()] = $referencing;
-		$this->referenced[$referencing->getHash()][$referenced->getHash()] = $referenced;
+		$this->nameerencing[$nameerenced->getHash()][$nameerencing->getHash()] = $nameerencing;
+		$this->nameerenced[$nameerencing->getHash()][$nameerenced->getHash()] = $nameerenced;
 	}
 
 
