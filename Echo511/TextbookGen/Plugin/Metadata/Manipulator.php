@@ -26,8 +26,16 @@ class Manipulator extends \Nette\Object
 	 */
 	public function removeAttribute($name, $content)
 	{
-		$pattern = '/@' . $name . ' (.*[^\s])/';
-		return preg_replace($pattern, "", $content);
+		$pattern = '/@' . $name . ' ([^"\n\r]*[^\s])/';
+		$content = preg_replace($pattern, "", $content);
+
+		$pattern = '/@' . $name . ':"([^@]*)"/';
+		$content = preg_replace($pattern, "", $content);
+
+		$pattern = '/@' . $name . ':([^"\s][^\s]*)/';
+		$content = preg_replace($pattern, "", $content);
+
+		return $content;
 	}
 
 
@@ -68,7 +76,10 @@ class Manipulator extends \Nette\Object
 	 */
 	public function replaceAttributes($name, $value, $for, $content)
 	{
-		return str_replace('@' . $name . ' ' . $value, $for, $content);
+		$content = str_replace('@' . $name . ' ' . $value, $for, $content);
+		$content = str_replace('@' . $name . ':' . $value, $for, $content);
+		$content = str_replace('@' . $name . ':"' . $value . '"', $for, $content);
+		return $content;
 	}
 
 
