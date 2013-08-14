@@ -27,7 +27,6 @@ class Manipulator extends \Nette\Object
 	public function removeAttribute($name, $content)
 	{
 		$pattern = '/@' . $name . ' (.*[^\s])/';
-		$content = $snippet->getContent();
 		return preg_replace($pattern, "", $content);
 	}
 
