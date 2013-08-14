@@ -9,10 +9,11 @@
  * the file license.txt that was distributed with this source code.
  */
 
-namespace Echo511\TextbookGen\Plugin\Includer;
+namespace Echo511\TextbookGen\Plugin\RelationMap;
 
 use Echo511\TextbookGen\IIndex;
 use Echo511\TextbookGen\ISnippet;
+use Echo511\TextbookGen\Plugin\Metadata\Analyzator;
 use Exception;
 use Nette\Object;
 
@@ -123,7 +124,7 @@ class RelationMap extends Object
 	{
 		// Translate ref to hash
 		foreach ($this->index->getAll() as $snippet) {
-			$ref = $this->analyzator->analyzeReference($snippet);
+			$ref = $this->analyzator->getAttribute('name', $snippet);
 
 			if ($ref) { // reference specified in content
 				if (isset($this->refToHash[$ref])) {
@@ -137,7 +138,7 @@ class RelationMap extends Object
 
 		// Create relation map
 		foreach ($this->index->getAll() as $snippet) {
-			$referenced = $this->analyzator->analyzeReferenced($snippet);
+			$referenced = $this->analyzator->getAttributes('include', $snippet);
 
 			foreach ($referenced as $ref) {
 				if (!isset($this->refToHash[$ref])) {
