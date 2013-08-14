@@ -62,7 +62,7 @@ class Analyzator extends Object
 		$pattern = '/@' . $name . ':"([^@]*)"/';
 		preg_match_all($pattern, $content, $matches_2);
 
-		$pattern = '/@' . $name . ':([^"\s][^\s]*)/';
+		$pattern = '/@' . $name . ':([^"\s][^"\s]*)/';
 		preg_match_all($pattern, $content, $matches_3);
 
 		return array_merge($matches_1[1], $matches_2[1], $matches_3[1]);

@@ -32,7 +32,7 @@ class Manipulator extends \Nette\Object
 		$pattern = '/@' . $name . ':"([^@]*)"/';
 		$content = preg_replace($pattern, "", $content);
 
-		$pattern = '/@' . $name . ':([^"\s][^\s]*)/';
+		$pattern = '/@' . $name . ':([^"\s][^"\s]*)/';
 		$content = preg_replace($pattern, "", $content);
 
 		return $content;
