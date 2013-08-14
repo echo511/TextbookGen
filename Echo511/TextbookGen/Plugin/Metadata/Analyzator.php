@@ -30,12 +30,9 @@ class Analyzator extends Object
 	 */
 	public function getAttribute($name, ISnippet $snippet)
 	{
-		$pattern = '/@' . $name . ' (.*[^\s])/';
-		$content = $snippet->getContent();
-		preg_match($pattern, $content, $matches);
-
-		if (isset($matches[1])) {
-			return $matches[1];
+		$matches = $this->matchAll($name, $snippet);
+		if (isset($matches[0])) {
+			return $matches[0];
 		}
 		return false;
 	}
@@ -50,14 +47,25 @@ class Analyzator extends Object
 	 */
 	public function getAttributes($name, ISnippet $snippet)
 	{
-		$pattern = '/@' . $name . ' (.*[^\s])/';
-		$content = $snippet->getContent();
-		preg_match_all($pattern, $content, $matches);
+		return $this->matchAll($name, $snippet);
+	}
 
-		if (isset($matches[1])) {
-			return $matches[1];
-		}
-		return false;
+
+
+	private function matchAll($name, ISnippet $snippet)
+	{
+		$content = $snippet->getContent();
+
+		$pattern = '/@' . $name . ' ([^"\n\r]*[^\s])/';
+		preg_match_all($pattern, $content, $matches_1);
+
+		$pattern = '/@' . $name . ':"([^@]*)"/';
+		preg_match_all($pattern, $content, $matches_2);
+
+		$pattern = '/@' . $name . ':([^"\s][^\s]*)/';
+		preg_match_all($pattern, $content, $matches_3);
+
+		return array_merge($matches_1[1], $matches_2[1], $matches_3[1]);
 	}
 
 
