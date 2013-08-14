@@ -17,7 +17,7 @@ use Echo511\TextbookGen\ISnippet;
 /**
  * Display output in browser.
  */
-final class BrowserOutputStorage extends OutputStorage
+final class BrowserOutputStorage extends OutputStorage implements \Echo511\TextbookGen\Plugin\Link\ILinkProvider
 {
 
 	/* ---------- OutputStorage ---------- */
@@ -25,6 +25,13 @@ final class BrowserOutputStorage extends OutputStorage
 	public function doStore($output, ISnippet $snippet)
 	{
 		echo $output;
+	}
+
+
+
+	public function getLinkForSnippet(ISnippet $snippet)
+	{
+		return $snippet->hash;
 	}
 
 

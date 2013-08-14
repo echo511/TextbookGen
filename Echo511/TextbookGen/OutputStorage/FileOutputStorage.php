@@ -12,12 +12,16 @@
 namespace Echo511\TextbookGen\OutputStorage;
 
 use Echo511\TextbookGen\ISnippet;
+use Echo511\TextbookGen\Plugin\Link\ILinkProvider;
+use Echo511\TextbookGen\Plugin\Metadata\Analyzator;
+use Exception;
+use Nette\Utils\Strings;
 
 
 /**
  * Store output in file.
  */
-final class FileOutputStorage extends OutputStorage
+final class FileOutputStorage extends OutputStorage implements ILinkProvider
 {
 
 	/** @var string */
@@ -26,19 +30,23 @@ final class FileOutputStorage extends OutputStorage
 	/** @var string */
 	private $ext;
 
+	/** @var Analyzator */
+	private $analyzator;
+
 
 	/**
 	 * @param string $dir Directory where perform storing.
 	 * @param string $ext Extension of resulting file.
 	 */
-	public function __construct($dir, $ext = null)
+	public function __construct($dir, $ext = 'html', Analyzator $analyzator)
 	{
 		if (!is_dir($dir)) {
-			throw new \Exception("Cannot proceed. $dir is not a directory.");
+			throw new Exception("Cannot proceed. $dir is not a directory.");
 		}
 
 		$this->dir = $dir;
 		$this->ext = $ext;
+		$this->analyzator = $analyzator;
 	}
 
 
@@ -55,6 +63,17 @@ final class FileOutputStorage extends OutputStorage
 
 	/* ---------- Additions ---------- */
 
+	public function getLinkForSnippet(ISnippet $snippet)
+	{
+		$link = $this->escapeName($this->analyzator->getAttribute('name', $snippet));
+		if (isset($this->ext)) {
+			$link .= '.' . $this->ext;
+		}
+		return $link;
+	}
+
+
+
 	/**
 	 * Return full filename of file snippet's output is supposed to be stored in.
 	 * 
@@ -65,11 +84,18 @@ final class FileOutputStorage extends OutputStorage
 	 */
 	private function getFilename(ISnippet $snippet)
 	{
-		$filename = $this->dir . DIRECTORY_SEPARATOR . time();
+		$filename = $this->dir . DIRECTORY_SEPARATOR . $this->escapeName($this->analyzator->getAttribute('name', $snippet));
 		if (isset($this->ext)) {
 			$filename .= '.' . $this->ext;
 		}
 		return $filename;
+	}
+
+
+
+	private function escapeName($name)
+	{
+		return Strings::webalize($name);
 	}
 
 
