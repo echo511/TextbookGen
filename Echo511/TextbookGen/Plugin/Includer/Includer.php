@@ -11,8 +11,10 @@
 
 namespace Echo511\TextbookGen\Plugin\Includer;
 
+use Echo511\TextbookGen\IOutputGeneratorFactory;
 use Echo511\TextbookGen\ISnippet;
-use Echo511\TextbookGen\OutputGenerator\FileTemplateOutputGeneratorFactory;
+use Echo511\TextbookGen\Plugin\Metadata\Manipulator;
+use Echo511\TextbookGen\Plugin\RelationMap\RelationMap;
 use Nette\Object;
 
 
@@ -25,20 +27,24 @@ class Includer extends Object
 	/** @var IncludedSnippetsTracker */
 	private $includedSnippetsTracker;
 
-	/** @var FileTemplateOutputGeneratorFactory */
+	/** @var IOutputGeneratorFactory */
 	private $outputGeneratorFactory;
 
 	/** @var RelationMap */
 	private $relationMap;
 
+	/** @var Manipulator */
+	private $manipulator;
+
 
 	/**
 	 * @param IncludedSnippetsTracker $includedSnippetsTracker
-	 * @param FileTemplateOutputGeneratorFactory $outputGeneratorFactory
+	 * @param IOutputGeneratorFactory $outputGeneratorFactory
 	 * @param RelationMap $relationMap
 	 */
-	public function __construct(IncludedSnippetsTracker $includedSnippetsTracker, FileTemplateOutputGeneratorFactory $outputGeneratorFactory, RelationMap $relationMap)
+	public function __construct(Manipulator $manipulator, IncludedSnippetsTracker $includedSnippetsTracker, IOutputGeneratorFactory $outputGeneratorFactory, RelationMap $relationMap)
 	{
+		$this->manipulator = $manipulator;
 		$this->includedSnippetsTracker = $includedSnippetsTracker;
 		$this->outputGeneratorFactory = $outputGeneratorFactory;
 		$this->relationMap = $relationMap;
@@ -54,28 +60,7 @@ class Includer extends Object
 	 */
 	public function process($content, ISnippet $snippet)
 	{
-		$content = $this->removeMetadata($content, $snippet);
 		$content = $this->performInclude($content, $snippet);
-		return $content;
-	}
-
-
-
-	/**
-	 * Remove variables from content.
-	 * @param type $content
-	 * @param ISnippet $snippet
-	 * @return string
-	 */
-	public function removeMetadata($content, ISnippet $snippet)
-	{
-		$ref = $this->relationMap->getRefBySnippet($snippet);
-
-		if ($ref) {
-			$what = '@includer.ref:' . $ref;
-			return str_replace($what, '', $content);
-		}
-
 		return $content;
 	}
 
@@ -95,9 +80,9 @@ class Includer extends Object
 			$this->includedSnippetsTracker->markDepth($referenced, $depth + 1);
 			$outputGenerator = $this->outputGeneratorFactory->create($referenced);
 
-			$what = '@include:' . $this->relationMap->getRefBySnippet($referenced);
+			$value = $this->relationMap->getRefBySnippet($referenced);
 			$for = $outputGenerator->generate();
-			$content = str_replace($what, $for, $content);
+			$content = $this->manipulator->replaceAttributes('include', $value, $for, $content);
 			$this->includedSnippetsTracker->markAsIncluded($referenced);
 		}
 		return $content;
