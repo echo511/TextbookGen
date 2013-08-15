@@ -34,6 +34,8 @@ class TexyPlugin
 		$texy = new Texy;
 		$texy->headingModule->top = $headingTop;
 		$texy->headingModule->generateID = TRUE;
+		$texy->imageModule->root = '';
+		$texy->imageModule->linkedRoot = '';
 		return $texy->process($string);
 	}
 
