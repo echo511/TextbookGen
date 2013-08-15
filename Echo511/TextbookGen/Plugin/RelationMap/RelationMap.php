@@ -88,14 +88,16 @@ class RelationMap extends Object
 	/**
 	 * Translate snippet to name variable.
 	 * @param ISnippet $snippet
-	 * @return string|boolean
+	 * @throws Exception
+	 * @return string
 	 */
 	public function getNameOfSnippet(ISnippet $snippet)
 	{
 		if (isset($this->hashToName[$snippet->hash])) {
 			return $this->hashToName[$snippet->hash];
 		}
-		return false;
+		$hash = $snippet->hash;
+		throw new Exception("Snippet $hash has no name.");
 	}
 
 
@@ -103,7 +105,8 @@ class RelationMap extends Object
 	/**
 	 * Translate name variable to snippet.
 	 * @param string $name
-	 * @return ISnippet|boolean
+	 * @throws Exception
+	 * @return ISnippet
 	 */
 	public function getSnippetByName($name)
 	{
@@ -111,7 +114,7 @@ class RelationMap extends Object
 			$hash = $this->nameToHash[$name];
 			return $this->index->get($hash);
 		}
-		return false;
+		throw new Exception("Snippet with name $name not found.");
 	}
 
 
