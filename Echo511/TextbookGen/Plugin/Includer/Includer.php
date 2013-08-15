@@ -80,7 +80,7 @@ class Includer extends Object
 			$this->includedSnippetsTracker->markDepth($referenced, $depth + 1);
 			$outputGenerator = $this->outputGeneratorFactory->create($referenced);
 
-			$value = $this->relationMap->getRefBySnippet($referenced);
+			$value = $this->relationMap->getNameOfSnippet($referenced);
 			$for = $outputGenerator->generate();
 			$content = $this->manipulator->replaceAttributes('include', $value, $for, $content);
 			$this->includedSnippetsTracker->markAsIncluded($referenced);
