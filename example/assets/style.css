@@ -1,0 +1,37 @@
+/***** TOC *****/
+.toc {
+	width: 170px;
+	margin: 15px 0 0 0;
+	padding: 10px 20px 10px 20px;
+	position: fixed;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+}
+.toc ul {
+	margin: 0;
+	padding: 0;
+}
+.toc ul li {
+	min-height: 30px;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+.toc ul > ul li {
+	text-indent: 10px;
+}
+
+/***** Content ******/
+.snippet-content
+{
+	text-align: justify;
+}
+
+/***** Footer *****/
+.footer {
+	margin: 20px 0 10px 0;
+	padding-top: 5px;
+	border-top: 1px solid #c9c9c9;
+	font-size: 80%;
+	text-align: center;
+}

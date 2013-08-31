@@ -1,0 +1,27 @@
+{includeblock @layout.latte}
+
+{include #layout}
+
+{define #title}
+Seznam snippetů
+{/define}
+
+{define #content}
+<div class="span12">
+	<h1>Všechny snippety</h1>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Jméno</th>
+				<th>Popis</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr n:foreach="$index->getAll() as $snippet">
+				<td class="span4"><a href="{$link->getLinkForSnippet($snippet)}">{$relationMap->getNameOfSnippet($snippet)}</a></td>
+				<td class="span8">{$analyzator->getAttribute('description', $snippet)}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+{/define}

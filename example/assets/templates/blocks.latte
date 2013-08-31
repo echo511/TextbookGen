@@ -1,0 +1,39 @@
+{define #content}
+	<div class="span3 toc-container"><div class="toc"></div></div>
+	<div class="span9 snippet-content">
+		{include #snippet, snippet => $snippet}
+
+		<h1>Články odkazující</h1>
+		{foreach $relationMap->getReferencing($snippet) as $referenced}
+			{if !$includedSnippetsTracker->isIncluded($referenced)}
+			{include #snippet, snippet => $referenced, referencing => true}
+			{/if}
+		{/foreach}
+	</div>
+{/define}
+
+{define #snippet, $snippet, $referencing}
+	{if isset($referencing)}
+		{$includedSnippetsTracker->unmarkDepth($snippet)}
+		{$includedSnippetsTracker->markDepth($snippet, 2)}
+	{/if}
+
+	{var depth = $includedSnippetsTracker->getDepthBySnippet($snippet)}
+	
+	{if (!isset($referencing) && $depth > 5)}
+		Snippet odkazuje dále na: <a href="{$link->getLinkForSnippet($snippet)}">{$analyzator->getAttribute('name', $snippet)}</a>
+	{else}
+	{var span = 9-($depth-1)}
+	<div class="row">
+	<div class="span{$span} {if $depth != 1}offset1{/if}">
+	{var content = $snippet->content}
+	{var content = $includer->process($content, $snippet)}
+	{var content = $link->process($content, $snippet)}
+	{var content = $image->process($content, $snippet)}
+	{var content = $texy->process($content, $depth)}
+	{var content = $manipulator->removeAll($content)}
+	{!$content}
+	</div>
+	</div>
+	{/if}
+{/define}

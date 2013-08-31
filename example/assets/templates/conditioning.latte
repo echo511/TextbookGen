@@ -1,0 +1,16 @@
+{includeblock @layout.latte}
+{includeblock blocks.latte}
+
+{if !$includedSnippetsTracker->isIncluded($snippet)}
+	{if $includedSnippetsTracker->isFirst($snippet)}
+{include #layout}
+	{else}
+{include #snippet, snippet => $snippet}
+	{/if}
+{else}
+	
+{/if}
+
+{define #title}
+{$analyzator->getAttribute('name', $snippet)}
+{/define}
