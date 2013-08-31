@@ -26,7 +26,7 @@ use Nette\Templating\FileTemplate;
 class FileTemplateLatteOutputGeneratorFactory extends Object implements IOutputGeneratorFactory
 {
 
-	/** @var string Location of latte file. */
+	/** @var string Filename of latte file. */
 	private $location;
 
 	/** @var Container */
@@ -65,6 +65,17 @@ class FileTemplateLatteOutputGeneratorFactory extends Object implements IOutputG
 
 		$this->onTemplate($template);
 		return new TemplateOutputGenerator($snippet, $template);
+	}
+
+
+
+	/**
+	 * Allow dynamic change of template location.
+	 * @param string $location Filename of latte file.
+	 */
+	public function setLocation($location)
+	{
+		$this->location = $location;
 	}
 
 
