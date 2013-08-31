@@ -56,7 +56,7 @@ class Analyzator extends Object
 	{
 		$content = $snippet->getContent();
 
-		$pattern = '/@' . $name . ' ([^"\n\r]*[^\s])/';
+		$pattern = '/@' . $name . ' ([^"\[\]\n\r]*[^*\[\]\s])/';
 		preg_match_all($pattern, $content, $matches_1);
 
 		$pattern = '/@' . $name . ':"([^@]*)"/';
