@@ -83,7 +83,7 @@ class Includer extends Object
 			$value = $this->relationMap->getNameOfSnippet($referenced);
 			$for = $outputGenerator->generate();
 			$content = $this->manipulator->replaceAttributes('include', $value, $for, $content);
-			$this->includedSnippetsTracker->markAsIncluded($referenced);
+			//$this->includedSnippetsTracker->markAsIncluded($referenced);
 		}
 		return $content;
 	}
