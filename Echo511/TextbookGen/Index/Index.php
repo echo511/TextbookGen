@@ -57,6 +57,7 @@ class Index extends Object implements IIndex
 
 	public function getAll()
 	{
+		asort($this->snippets);
 		return $this->snippets;
 	}
 
