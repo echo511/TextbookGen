@@ -2,9 +2,7 @@
 	"name": "echo511/textbook-gen",
 	"description": "Textbook generator tool.",
 	"require": {
-		"nette/nette": "@dev",
-		"kdyby/console": "@dev",
-		"kdyby/events": "@dev"
+		"nette/nette": "@dev"
 	},
 	"require-dev": {
 		"nette/tester": "@dev",
@@ -17,5 +15,8 @@
 			"email": "ntsiongas@gmail.com"
 		}
 	],
-	"minimum-stability": "dev"
+	"minimum-stability": "dev",
+	"scripts": {
+        "post-update-cmd": "Echo511\\TextbookGen\\Composer\\Scripts::postCreateProjectCmd"
+    }
 }

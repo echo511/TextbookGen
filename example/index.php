@@ -1,9 +1,9 @@
 <?php
 
+use Echo511\TextbookGen\Composer\Scripts;
 use Echo511\TextbookGen\Generator\Generator;
 use Echo511\TextbookGen\Index\Index;
 use Echo511\TextbookGen\OutputGeneratorFactory\FileTemplateLatteOutputGeneratorFactory;
-use Echo511\TextbookGen\OutputStorage\BrowserOutputStorage;
 use Echo511\TextbookGen\OutputStorage\FileOutputStorage;
 use Echo511\TextbookGen\Plugin\Image\ImageIndex;
 use Echo511\TextbookGen\Plugin\Image\ImagePlugin;
@@ -22,6 +22,10 @@ use Nette\Templating\ITemplate;
 use Nette\Utils\Finder;
 
 
+// Step 0: after install
+require_once __DIR__ . '/../Echo511/TextbookGen/Composer/Scripts.php';
+Scripts::postCreateProjectCmd();
+
 // Composer autoloader
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -31,8 +35,6 @@ $configurator = new Configurator;
 // Enable Nette Debugger for error visualisation & logging
 // $configurator->setDebugMode(TRUE);
 $configurator->enableDebugger(__DIR__ . '/../log');
-
-// Enable RobotLoader - this will load all classes automatically
 $configurator->setTempDirectory(__DIR__ . '/../temp');
 $configurator->createRobotLoader()
 	->addDirectory(__DIR__ . '/../Echo511')
@@ -64,7 +66,6 @@ $generator = new Generator($index, $outputGeneratorFactory, $outputStorage);
 
 
 // Step 5: Initialize plugins
-
 //// Metadata
 $analyzator = new Analyzator;
 $manipulator = new Manipulator;
